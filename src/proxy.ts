@@ -5,20 +5,24 @@ import type { NextRequest } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
-export async function proxy(request: NextRequest) {
+// Wrap the auth middleware and export as proxy for Next.js 16
+const authProxy = auth((req) => {
+  const isLoggedIn = !!req.auth;
+  const { pathname } = req.nextUrl;
+
   const protectedPaths = ["/profile", "/report"];
-  const { pathname } = request.nextUrl;
   const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
-  if (isProtected) {
-    // Use auth() to check session
-    const session = await auth();
-    if (!session) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
+  if (isProtected && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
   return NextResponse.next();
+});
+
+// Next.js 16 requires the export to be named "proxy"
+export function proxy(request: NextRequest) {
+  return authProxy(request, {} as any);
 }
 
 export const config = {
