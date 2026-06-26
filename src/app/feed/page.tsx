@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IssueFeed } from "@/components/issue-feed";
 
 async function fetchIssues() {
-  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/issues`, {
+  const res = await fetch(`${process.env.AUTH_URL}/api/issues`, {
     cache: "no-store",
   });
   if (!res.ok) throw new Error("Failed to fetch");
