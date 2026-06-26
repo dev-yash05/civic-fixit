@@ -1,22 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import NextAuth from "next-auth";
+import { authConfig } from "@/lib/auth.config";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default async function proxy(req: NextRequest) {
-  const session = await auth();
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const isLoggedIn = !!req.auth;
+  const { pathname } = req.nextUrl;
 
   const protectedPaths = ["/profile", "/report"];
-  const isProtected = protectedPaths.some((path) =>
-    req.nextUrl.pathname.startsWith(path)
-  );
+  const isProtected = protectedPaths.some((path) => pathname.startsWith(path));
 
-  if (isProtected && !session) {
-    return NextResponse.redirect(
-      new URL("/sign-in", req.url)
-    );
+  if (isProtected && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ["/profile/:path*", "/report/:path*"],
