@@ -2,6 +2,10 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { SignOutButton } from "@/components/sign-out-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import UserIcon from "@/components/icons/user-icon";
+import MapPinIcon from "@/components/icons/map-pin-icon";
+import LayoutDashboardIcon from "@/components/icons/layout-dashboard-icon";
+import PenIcon from "@/components/icons/pen-icon";
 
 export async function Navbar() {
   const session = await auth();
@@ -25,25 +29,27 @@ export async function Navbar() {
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/feed"
-            className="text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="flex items-center gap-1.5 text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group/nav"
           >
-            Feed
+            <LayoutDashboardIcon size={16} strokeWidth={2.5} className="group-hover/nav:text-[var(--text-primary)]" />
+            <span className="hidden sm:inline">Feed</span>
           </Link>
           <Link
             href="/map"
-            className="text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors"
+            className="flex items-center gap-1.5 text-xs sm:text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors group/nav"
           >
-            Map
+            <MapPinIcon size={16} strokeWidth={2.5} className="group-hover/nav:text-[var(--text-primary)]" />
+            <span className="hidden sm:inline">Map</span>
           </Link>
 
           {session ? (
             <>
               <Link
                 href="/report"
-                className="gradient-btn text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg ml-1 sm:ml-0"
+                className="gradient-btn flex items-center gap-1.5 text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg ml-1 sm:ml-0 group/nav"
               >
-                <span className="hidden sm:inline">+ Report</span>
-                <span className="sm:hidden">+</span>
+                <PenIcon size={14} strokeWidth={2.5} className="group-hover/nav:text-[#0a0a0f]" color="#0a0a0f" />
+                <span className="hidden sm:inline">Report</span>
               </Link>
               <Link
                 href="/profile"
@@ -53,7 +59,10 @@ export async function Navbar() {
                 <div className="w-7 h-7 sm:hidden rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-xs font-bold text-[#0a0a0f]">
                   {session.user?.name?.[0] ?? "?"}
                 </div>
-                <span className="hidden sm:block">{session.user?.name}</span>
+                <div className="hidden sm:flex items-center gap-1.5">
+                  <UserIcon size={16} strokeWidth={2.5} />
+                  <span>{session.user?.name}</span>
+                </div>
               </Link>
               <SignOutButton />
             </>

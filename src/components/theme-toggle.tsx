@@ -2,7 +2,8 @@
 
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import MoonIcon from "@/components/icons/moon-icon";
+import BrightnessDownIcon from "@/components/icons/brightness-down-icon";
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
@@ -24,9 +25,9 @@ export function ThemeToggle() {
       title="Toggle theme"
     >
       {theme === "dark" ? (
-        <Sun size={16} strokeWidth={2.5} />
+        <BrightnessDownIcon size={16} strokeWidth={2.5} />
       ) : (
-        <Moon size={16} strokeWidth={2.5} />
+        <MoonIcon size={16} strokeWidth={2.5} />
       )}
     </button>
   );
