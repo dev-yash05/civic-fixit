@@ -22,8 +22,8 @@ export async function Navbar() {
               />
             </svg>
           </div>
-          <span className="font-semibold text-[var(--text-primary)] text-sm sm:text-base hidden xs:inline-block">
-            Civic Fix-It
+          <span className="font-semibold text-[var(--text-primary)] text-sm sm:text-base">
+            Civic Pulse
           </span>
         </Link>
         <div className="flex items-center gap-2 sm:gap-4">

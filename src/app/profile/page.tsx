@@ -22,11 +22,11 @@ export default async function ProfilePage() {
   const open = userIssues.filter((i) => i.status === "open").length;
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-24">
-      <div className="orb orb-emerald w-[300px] h-[300px] -top-32 right-0 animate-blob" />
-      <div className="orb orb-purple w-[250px] h-[250px] bottom-20 -left-20 animate-blob" style={{ animationDelay: "4s" }} />
-
+    <>
       <Navbar />
+      <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-24">
+        <div className="orb orb-emerald w-[300px] h-[300px] -top-32 right-0 animate-blob" />
+        <div className="orb orb-purple w-[250px] h-[250px] bottom-20 -left-20 animate-blob" style={{ animationDelay: "4s" }} />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8 relative z-10">
         {/* Profile header */}
@@ -110,5 +110,6 @@ export default async function ProfilePage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

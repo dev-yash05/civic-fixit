@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Civic Fix-It Board",
+  title: "Civic Pulse",
   description: "Report and track local civic issues in your neighbourhood — potholes, broken lights, waste, and more.",
 };
 
