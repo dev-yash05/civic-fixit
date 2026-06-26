@@ -1,24 +1,35 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
+import { IssueDetailDrawer } from "@/components/issue-detail-drawer";
+import { auth } from "@/lib/auth";
 
-const geist = Geist({ subsets: ["latin"] });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Civic Fix-It Board",
-  description: "Report and track local issues in your area",
+  description: "Report and track local civic issues in your neighbourhood — potholes, broken lights, waste, and more.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+  
   return (
-    <html lang="en">
-      <body className={geist.className}>
-        <Providers>{children}</Providers>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className={inter.className}>
+        <Providers>
+          {children}
+          <IssueDetailDrawer sessionUserId={session?.user?.id ?? null} />
+        </Providers>
       </body>
     </html>
   );

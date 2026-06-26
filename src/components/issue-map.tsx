@@ -11,6 +11,6 @@ const LeafletMap = dynamic(() => import("./leaflet-map"), {
   ),
 });
 
-export function IssueMap() {
-  return <LeafletMap />;
+export function IssueMap({ sessionUserId }: { sessionUserId: string | null }) {
+  return <LeafletMap sessionUserId={sessionUserId} />;
 }

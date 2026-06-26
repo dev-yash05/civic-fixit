@@ -7,27 +7,32 @@ export default async function SignInPage() {
   if (session) redirect("/");
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="bg-white rounded-2xl border border-gray-200 p-10 flex flex-col items-center gap-8 w-full max-w-sm">
-        {/* logo */}
-        <div className="flex flex-col items-center gap-2 text-center">
-          <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center mb-1">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Decorative orbs */}
+      <div className="orb orb-emerald w-[350px] h-[350px] -top-32 -right-32 animate-blob" />
+      <div className="orb orb-cyan w-[300px] h-[300px] bottom-0 -left-32 animate-blob" style={{ animationDelay: "3s" }} />
+      <div className="orb orb-purple w-[250px] h-[250px] top-1/2 right-1/4 animate-blob" style={{ animationDelay: "5s" }} />
+
+      <div className="glass-card gradient-border rounded-2xl p-8 sm:p-10 flex flex-col items-center gap-8 w-full max-w-sm animate-fade-in-up relative z-10">
+        {/* Logo */}
+        <div className="flex flex-col items-center gap-3 text-center">
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center animate-pulse-glow">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
               <path
                 d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                fill="white"
+                fill="#0a0a0f"
               />
             </svg>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-xl font-semibold text-[var(--text-primary)]">
             Civic Fix-It Board
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-[var(--text-secondary)]">
             Sign in to report and track local issues
           </p>
         </div>
 
-        {/* google button */}
+        {/* Google button */}
         <form
           action={async () => {
             "use server";
@@ -37,7 +42,7 @@ export default async function SignInPage() {
         >
           <button
             type="submit"
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-xl text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 active:scale-95 transition-all"
+            className="w-full flex items-center justify-center gap-3 px-4 py-3.5 glass-input rounded-xl text-sm font-medium text-[var(--text-primary)] hover:bg-white/5 active:scale-[0.98] transition-all cursor-pointer"
           >
             <svg width="18" height="18" viewBox="0 0 18 18">
               <path
@@ -61,9 +66,8 @@ export default async function SignInPage() {
           </button>
         </form>
 
-        <p className="text-xs text-gray-400 text-center">
-          By signing in you agree to report issues responsibly and in good
-          faith.
+        <p className="text-xs text-[var(--text-muted)] text-center leading-relaxed">
+          By signing in you agree to report issues responsibly and in good faith.
         </p>
       </div>
     </div>

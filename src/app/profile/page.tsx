@@ -3,8 +3,9 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { issues } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
-import { SignOutButton } from "@/components/sign-out-button";
 import Link from "next/link";
+import { ProfileIssueCard } from "@/components/profile-issue-card";
+import { Navbar } from "@/components/navbar";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -21,111 +22,90 @@ export default async function ProfilePage() {
   const open = userIssues.filter((i) => i.status === "open").length;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* navbar */}
-      <nav className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-semibold text-gray-900">
-            Civic Fix-It Board
-          </Link>
-          <SignOutButton />
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden pt-24">
+      <div className="orb orb-emerald w-[300px] h-[300px] -top-32 right-0 animate-blob" />
+      <div className="orb orb-purple w-[250px] h-[250px] bottom-20 -left-20 animate-blob" style={{ animationDelay: "4s" }} />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 flex flex-col gap-8">
-        {/* profile header */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-8 flex items-center gap-6">
-          {session.user?.image ? (
-            <img
-              src={session.user.image}
-              alt={session.user.name ?? ""}
-              className="w-16 h-16 rounded-full"
-            />
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center text-xl font-semibold text-gray-600">
-              {session.user?.name?.[0] ?? "?"}
+      <Navbar />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10 flex flex-col gap-6 sm:gap-8 relative z-10">
+        {/* Profile header */}
+        <div className="glass-card gradient-border rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-center sm:items-start gap-6 animate-fade-in-up relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/10 blur-[100px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-cyan-400/10 blur-[100px] rounded-full pointer-events-none" />
+          
+          <div className="relative shrink-0">
+            {session.user?.image ? (
+              <img
+                src={session.user.image}
+                alt={session.user.name ?? ""}
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-full ring-4 ring-emerald-400/30 ring-offset-4 ring-offset-[var(--bg-card)] shadow-[0_0_30px_rgba(52,211,153,0.3)] object-cover"
+              />
+            ) : (
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-3xl font-bold text-[#0a0a0f] shadow-[0_0_30px_rgba(52,211,153,0.3)]">
+                {session.user?.name?.[0] ?? "?"}
+              </div>
+            )}
+            <div className="absolute -bottom-2 -right-2 bg-[var(--bg-card)] p-1.5 rounded-full border border-emerald-400/30">
+              <div className="bg-emerald-400/20 text-emerald-400 p-1.5 rounded-full">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" /></svg>
+              </div>
             </div>
-          )}
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">
-              {session.user?.name}
-            </h1>
-            <p className="text-sm text-gray-500">{session.user?.email}</p>
+          </div>
+          
+          <div className="flex flex-col items-center sm:items-start text-center sm:text-left z-10 pt-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">{session.user?.name}</h1>
+            <p className="text-sm sm:text-base text-[var(--text-secondary)] mt-1 font-medium">{session.user?.email}</p>
+            <div className="flex items-center gap-2 mt-4 bg-white/5 border border-white/10 px-3 py-1.5 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs font-semibold tracking-wide text-emerald-400 uppercase">Civic Reporter</span>
+            </div>
           </div>
         </div>
 
-        {/* stats */}
-        <div className="grid grid-cols-3 gap-4">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-5 stagger-children">
           {[
-            { label: "Total reported", value: total },
-            { label: "Open", value: open },
-            { label: "Resolved", value: resolved },
+            { label: "Total Reports", value: total, icon: "📋", color: "from-blue-400 to-cyan-400" },
+            { label: "Open Issues", value: open, icon: "🔴", color: "from-amber-400 to-orange-400" },
+            { label: "Resolved", value: resolved, icon: "✅", color: "from-emerald-400 to-teal-400" },
           ].map((stat) => (
-            <div
-              key={stat.label}
-              className="bg-white border border-gray-200 rounded-xl p-6 text-center"
-            >
-              <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
-              <p className="text-sm text-gray-500 mt-1">{stat.label}</p>
+            <div key={stat.label} className="glass-card rounded-2xl p-5 sm:p-6 text-center hover:bg-white/5 transition-colors group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative z-10">
+                <span className="text-xl sm:text-2xl mb-3 block opacity-90 group-hover:scale-110 transition-transform">{stat.icon}</span>
+                <p className={`text-2xl sm:text-4xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent drop-shadow-sm`}>
+                  {stat.value}
+                </p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--text-secondary)] mt-2 uppercase tracking-wide">{stat.label}</p>
+              </div>
             </div>
           ))}
         </div>
 
-        {/* issues list */}
-        <div className="flex flex-col gap-3">
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wider">
-            Your reports
-          </h2>
+        {/* Issues list */}
+        <div className="flex flex-col gap-4 mt-2">
+          <div className="flex items-center gap-3 mb-2 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            <h2 className="text-lg font-semibold text-[var(--text-primary)]">Your Reports</h2>
+            <div className="h-px flex-1 bg-gradient-to-r from-[var(--glass-border)] to-transparent" />
+          </div>
 
           {userIssues.length === 0 ? (
-            <div className="bg-white border border-gray-200 rounded-2xl p-12 text-center">
-              <p className="text-gray-500 text-sm">No issues reported yet.</p>
-              <Link
-                href="/report"
-                className="mt-4 inline-block bg-black text-white text-sm px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
-              >
+            <div className="glass-card rounded-3xl p-12 sm:p-16 text-center flex flex-col items-center gap-4 animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
+              <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center text-3xl mb-2">🗺️</div>
+              <p className="text-[var(--text-primary)] font-medium text-lg">No issues reported yet</p>
+              <p className="text-[var(--text-secondary)] text-sm max-w-sm">Help make your neighbourhood better by reporting local problems on the map.</p>
+              <Link href="/report" className="gradient-btn inline-flex items-center gap-2 text-sm px-6 py-3 rounded-xl mt-2 font-semibold">
                 Report your first issue
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
               </Link>
             </div>
           ) : (
-            userIssues.map((issue) => (
-              <div
-                key={issue.id}
-                className="bg-white border border-gray-200 rounded-xl p-5 flex items-start justify-between gap-4"
-              >
-                <div className="flex flex-col gap-1 min-w-0">
-                  <p className="font-medium text-gray-900 truncate">
-                    {issue.title}
-                  </p>
-                  <p className="text-sm text-gray-500 line-clamp-2">
-                    {issue.description}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full capitalize">
-                      {issue.category}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {new Date(issue.createdAt).toLocaleDateString("en-IN", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
-                  </div>
-                </div>
-                <span
-                  className={`text-xs font-medium px-2.5 py-1 rounded-full shrink-0 ${
-                    issue.status === "resolved"
-                      ? "bg-green-100 text-green-700"
-                      : issue.status === "in_progress"
-                      ? "bg-yellow-100 text-yellow-700"
-                      : "bg-red-100 text-red-700"
-                  }`}
-                >
-                  {issue.status.replace("_", " ")}
-                </span>
-              </div>
-            ))
+            <div className="flex flex-col gap-3 stagger-children">
+              {userIssues.map((issue) => (
+                <ProfileIssueCard key={issue.id} issue={issue} />
+              ))}
+            </div>
           )}
         </div>
       </div>
