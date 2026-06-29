@@ -5,14 +5,7 @@ import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import Link from "next/link";
 import { IssueFeed } from "@/components/issue-feed";
 import { Navbar } from "@/components/navbar";
-
-async function fetchIssues() {
-  const res = await fetch(`${process.env.AUTH_URL}/api/issues`, {
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error("Failed to fetch");
-  return res.json();
-}
+import { getAllIssues } from "@/lib/issues";
 
 export default async function FeedPage() {
   const session = await auth();
@@ -20,7 +13,7 @@ export default async function FeedPage() {
 
   await qc.prefetchQuery({
     queryKey: ["issues"],
-    queryFn: fetchIssues,
+    queryFn: getAllIssues,
   });
 
   return (

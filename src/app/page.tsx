@@ -40,7 +40,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <>
+    <div className="overflow-x-hidden">
       <Navbar />
 
       <div className="min-h-screen bg-[var(--bg-primary)] overflow-hidden pt-24">
@@ -384,6 +384,6 @@ export default async function HomePage() {
           </div>
         </footer>
       </div>
-    </>
+    </div>
   );
 }

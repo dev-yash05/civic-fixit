@@ -118,14 +118,14 @@ export default function LeafletMap({ sessionUserId }: { sessionUserId: string | 
   return (
     <div className="w-full h-full relative">
       {/* filter bar - Mobile scrollable */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] max-w-[90vw] overflow-x-auto no-scrollbar">
-        <div className="flex gap-2 glass px-2 py-2 rounded-xl whitespace-nowrap">
+      <div className="absolute top-4 left-0 right-0 z-[1000] px-3 sm:px-4 overflow-x-auto no-scrollbar">
+        <div className="flex gap-2 glass px-2 py-2 rounded-xl w-fit mx-auto whitespace-nowrap">
           {(["all", "road", "lighting", "waste", "water", "park", "other"] as const).map(
             (cat) => (
               <button
                 key={cat}
                 onClick={() => useUIStore.getState().setActiveCategory(cat)}
-                className={`text-xs px-3 py-1.5 rounded-lg font-medium capitalize transition-all cursor-pointer ${
+                className={`text-xs px-3 py-1.5 rounded-lg font-medium capitalize transition-all cursor-pointer shrink-0 ${
                   activeCategory === cat
                     ? "bg-gradient-to-r from-emerald-400 to-cyan-400 text-[#0a0a0f] shadow-lg shadow-emerald-500/20"
                     : "text-[var(--text-secondary)] hover:bg-white/10 hover:text-[var(--text-primary)]"
